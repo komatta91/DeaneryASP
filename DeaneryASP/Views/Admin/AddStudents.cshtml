@@ -1,0 +1,81 @@
+﻿@using DeaneryASP.Models
+@model AddStudentsViewModel
+
+@{
+    ViewBag.Title = "Zapisz studentów";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <form action="/Admin/AddStudents" method="post" role="form">
+        @Html.HiddenFor(m => m.RealisationID)
+        @Html.HiddenFor(m => m.SemestrID)
+        <div class="panel panel-default" style="margin: 20px 0px 0px 0px;">
+            <div class="panel-heading"><h4>@ViewBag.Title</h4></div>
+            <div class="panel-body">
+                <div class="container">
+                    <select class="selectpicker show-menu-arrow" data-live-search="true" id="us-sel" name="StudentID">
+                        <option selected disabled value="0">Wybierz studenta</option>
+                        @foreach (var stud in Model.Students)
+                        {
+                            <option value=@stud.StudentID>@stud.IndexNo @stud.LastName @stud.FirstName</option>
+                        }
+                    </select>
+
+                    <button type="submit" class="btn btn-success" title="Zapisz" name="Action" value="save">Zapisz</button>
+                    <button type="submit" class="btn btn-primary pull-right" title="Zapisz" name="Action" value="return">Powrót do listy</button>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-2">Numer Indeksu</th>
+                            <th class="col-sm-3">Nazwisko</th>
+                            <th class="col-sm-3">Imię</th>
+                            <th class="col-sm-3"></th>
+                            <th class="col-sm-3"></th>
+                        </tr>
+                    </thead>
+                    @if (Model.RegistredStudents != null)
+                    {
+                        <tbody>
+                            @foreach (var subject in Model.RegistredStudents)
+                            {
+                                <tr>
+                                    <td>@subject.IndexNo</td>
+                                    <td>@subject.LastName </td>
+                                    <td>@subject.FirstName</td>
+                                    
+                                    <td>
+                                        @if (Model.DStudentID.HasValue && Model.DStudentID.Value == subject.StudentID)
+                                        {
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        }
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-danger" title="Usun" name="DStudentID" value=@subject.StudentID>Usuń</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                </table>
+
+            </div>
+        </div>
+        <div class="container">
+            <a class="btn btn-info pull-right" style="margin: 5px 0px 0px 0px;" href="/Admin">Powrót</a>
+        </div>
+    </form>
+
+    @section Scripts
+{
+        <script>
+            $(document).ready(function () {
+                console.log("ready!");
+
+                $('.selectpicker').selectpicker();
+            });
+
+        </script>
+    }
+
+}

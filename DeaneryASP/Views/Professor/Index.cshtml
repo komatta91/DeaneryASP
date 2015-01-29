@@ -1,0 +1,58 @@
+﻿@using DeaneryASP.Models
+@model BaseViewModel
+
+@{
+    ViewBag.Title = "Wybierz Przedmiot";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <form action="/Professor" method="post" role="form">
+        <div class="panel panel-default" style="margin: 20px 0px 0px 0px;">
+            <div class="panel-heading"><h4>@ViewBag.Title</h4></div>
+            <div class="panel-body">
+                <div class="container">
+                    <div class="row" style="vertical-align: middle;">
+                        <div class="col-md-3">
+                            <div class="form-group span1 text-right">
+                                @Html.LabelFor(m => m.Dictionary)
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group span2">
+                                <select class="selectpicker show-menu-arrow" data-live-search="true" id="RealisationsID" name="RealisationsID">
+                                    <option selected disabled>Wybierz przedmiot</option>
+                                    @foreach (var semestr in Model.Dictionary.Keys)
+                                    {
+                                        <optgroup label=@semestr.Name>
+                                            @foreach (var subject in Model.Dictionary[semestr])
+                                            {
+                                                <option value=@subject.RealisationsID>@subject.Name</option>
+                                            }
+                                        </optgroup>
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" class="btn btn-info" value="Pokaż oceny" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+
+            $('.selectpicker').selectpicker();
+        });
+
+    </script>
+    }
+}
+
+

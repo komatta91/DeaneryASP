@@ -1,0 +1,35 @@
+﻿
+@if (User.Identity.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOut", "Login", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @if (User.IsInRole("Student"))
+            { 
+            @Html.ActionLink("Witaj " + User.Identity.Name + "!", "Index", "Student", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                @Html.ActionLink("Witaj " + User.Identity.Name + "!", "Index", "Admin", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })
+            }
+            
+            @if (User.IsInRole("Professor"))
+            {
+                @Html.ActionLink("Witaj " + User.Identity.Name + "!", "Index", "Professor", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })
+            }
+        </li>
+        <li><a href="javascript:sessionStorage.removeItem('accessToken');$('#logoutForm').submit();">Wyloguj</a></li>
+    </ul>
+    }
+    
+    
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Zaloguj", "Login", "Login", routeValues: new { area = "" }, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

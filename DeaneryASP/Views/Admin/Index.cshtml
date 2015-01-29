@@ -1,0 +1,53 @@
+﻿@using DeaneryASP.Models
+@model AdminViewModel
+
+@{
+    ViewBag.Title = "Wybierz Przedmiot";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <form action="/Admin" method="post" role="form">
+        <div class="panel panel-default" style="margin: 20px 0px 0px 0px;">
+            <div class="panel-heading"><h4>@ViewBag.Title</h4></div>
+            <div class="panel-body">
+                <div class="container">
+                    <div class="row" style="vertical-align: middle;">
+                        <div class="col-md-3">
+                            <div class="form-group span1 text-right">
+                                @Html.LabelFor(m => m.Semestrs)
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group span2">
+                                <select class="selectpicker show-menu-arrow" data-live-search="true" id="SemestrID" name="SemestrID">
+                                    <option selected disabled>Wybierz semestr</option>
+                                    @foreach (var semestr in Model.Semestrs)
+                                    {
+                                        <option value=@semestr.SemesterID>@semestr.Name</option>
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" class="btn btn-info" value="Dalej" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    @section Scripts
+{
+        <script>
+            $(document).ready(function () {
+                console.log("ready!");
+
+                $('.selectpicker').selectpicker();
+            });
+
+        </script>
+    }
+
+}

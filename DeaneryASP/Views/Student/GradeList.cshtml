@@ -1,0 +1,47 @@
+﻿@using DeaneryASP.Models
+@model GradeListViewModel
+
+@{
+    ViewBag.Title = "Lista Ocen";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="panel panel-default" style="margin: 20px 0px 0px 0px;">
+        <div class="panel-heading"><h4>@ViewBag.Title</h4></div>
+        <div class="panel-body">
+            
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Indeks</th>
+                        <th>Ocena</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                @if (Model.GradeItems != null)
+                {
+                    <tbody>
+                        @foreach (var grade in Model.GradeItems)
+                        {
+                        <tr>
+                            <td>@grade.Name</td>
+                            <td>@grade.Value</td>
+                            <td>@grade.Date</td>
+                        </tr>
+                        }
+                    </tbody>
+                }
+            </table>
+
+        </div>
+        
+            
+            
+       
+    </div>
+    <div class="container">
+        
+        <a class="btn btn-info pull-right" style="margin: 5px 0px 0px 0px;" href="/Student">Powrót</a>
+        
+    </div>
+}

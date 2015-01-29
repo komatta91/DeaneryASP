@@ -1,0 +1,121 @@
+﻿@using DeaneryASP.Models
+@model EditGradeViewModel
+@{
+    ViewBag.Title = "Edycja definicji oceny";
+    ViewBag.Modal = (Model.Error == true ? 1 : 0);
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+
+    <form action="/Professor/EditGrade" method="post" role="form">
+        @Html.HiddenFor(m => m.RealisationID)
+        @Html.HiddenFor(m => m.TimeStamp)
+        @Html.HiddenFor(m => m.GradeID)
+        <div class="panel panel-default" style="margin: 20px 0px 0px 0px;">
+            <div class="panel-heading">
+                <h4>@ViewBag.Title</h4>
+            </div>
+            <div class="panel-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <section>
+                    <div class="bs-docs-grid">
+                        <div class="row-fluid show-grid">
+                            <div class="form-group" style="padding: 5px 5px 5px 5px;">
+                                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label text-right" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div><!-- /row -->
+                        <hr />
+                        <div class="row-fluid show-grid">
+                            <div class="form-group" style="padding: 5px 5px 5px 5px;">
+                                @Html.LabelFor(m => m.MaxValue, new { @class = "col-md-2 control-label text-right" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(m => m.MaxValue, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.MaxValue, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div><!-- /row -->
+                    </div>
+                </section>
+                <div class="container">
+                    <button type="submit" class="btn btn-danger pull-right" title="Anuluj" name="Action" value="cancel" style="margin: 2px 2px 2px 2px;">Anuluj</button>
+                    <button type="submit" class="btn btn-success pull-right" title="Zapisz" name="Action" value="save" style="margin: 2px 2px 2px 2px;">Zapisz</button>
+                </div>
+
+            </div>
+        </div>
+        <div class="container">
+            <a class="btn btn-info pull-right" style="margin: 5px 0px 0px 0px;" href="/Professor">Powrót</a>
+        </div>
+    </form>
+    <div class="modal fade" id="basicModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Nie można edytować</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Oceny wymagające edycji:</p>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="col-sm-1">Numer indeksu</th>
+                                <th class="col-sm-2">Imię</th>
+                                <th class="col-sm-2">Nazwisko</th>
+                                <th class="col-sm-2">Ocena</th>
+
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            @if (Model.Error)
+                            {
+                                foreach (var student in Model.ErroredStudents)
+                                {
+                                    <tr>
+                                        <td>@student.IndexNo</td>
+                                        <td>@student.FirstName</td>
+                                        <td>@student.LastName</td>
+                                        <td>@student.GradeValue</td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info"  data-dismiss="modal">Zamknij</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        console.log("ready!");
+        if (@ViewBag.Modal == 1)
+        {
+            console.log("modal!");
+            
+            $('#basicModal').modal(
+            );
+        }
+    
+        
+
+    });
+
+                
+
+</script>
+}

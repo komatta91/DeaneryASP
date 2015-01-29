@@ -1,0 +1,67 @@
+﻿@using DeaneryASP.Models
+@model SubjectListViewModel
+@{
+    ViewBag.Title = "Lista realizacji";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <form action="/Admin/SemestrList" method="post" role="form">
+        @Html.HiddenFor(m => m.SemestrID)
+        <div class="panel panel-default" style="margin: 20px 0px 0px 0px;">
+            <div class="panel-heading"><h4>@ViewBag.Title</h4></div>
+            <div class="panel-body">
+                <div class="container">
+                    <button type="submit" class="btn btn-primary pull-right" title="Wystew Oceny" name="AddNew" value="yes">Dodaj Realizację</button>
+
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-2">Nazwa przemiotu</th>
+                            <th class="col-sm-1">Wersja</th>
+                            <th class="col-sm-2">Prowadzący</th>
+                            <th class="col-sm-3"></th>
+                            <th class="col-sm-3"></th>
+                        </tr>
+                    </thead>
+                    @if (Model.Subjects != null)
+                    {
+                        <tbody>
+                            @foreach (var subject in Model.Subjects)
+                            {
+                                <tr>
+                                    <td>@subject.Name</td>
+                                    <td>@subject.Version</td>
+                                    <td>
+                                        @subject.LastName @subject.FirstName
+                                    </td>
+                                    <td>
+                                        @if (Model.DRealisationID.HasValue && Model.DRealisationID.Value == subject.RealisationID)
+                                        {
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        }
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success" title="Wystew Oceny" name="ARealisationID" value=@subject.RealisationID>Zapisz studentów</button>
+                                        <button type="submit" class="btn btn-warning" title="Edytyj" name="ERealisationID" value=@subject.RealisationID>Edytuj</button>
+                                        <button type="submit" class="btn btn-danger" title="Usun" name="DRealisationID" value=@subject.RealisationID>Usuń</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                </table>
+
+            </div>
+
+
+
+
+        </div>
+        <div class="container">
+
+            <a class="btn btn-info pull-right" style="margin: 5px 0px 0px 0px;" href="/Admin">Powrót</a>
+
+        </div>
+    </form>
+}

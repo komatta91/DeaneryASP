@@ -1,0 +1,22 @@
+﻿<li>
+    @if (User.IsInRole("Student"))
+    {
+
+        @Html.ActionLink("Panel Studenta", "Index", "Student")
+
+    }
+    @if (User.IsInRole("Admin"))
+    {
+
+        @Html.ActionLink("Panel Admina", "Index", "Admin")
+
+    }
+
+    @if (User.IsInRole("Professor"))
+    {
+
+        @Html.ActionLink("Panel Nauczyciela", "Index", "Professor")
+
+    }
+</li>
+

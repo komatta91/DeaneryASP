@@ -1,0 +1,65 @@
+﻿@using DeaneryASP.Models
+@model ProfessorGradeListViewModel
+@{
+    ViewBag.Title = "Definicje Ocen";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <form action="/Professor/GradeList" method="post" role="form">
+        @Html.HiddenFor(m => m.RealisationID)
+        <div class="panel panel-default" style="margin: 20px 0px 0px 0px;">
+            <div class="panel-heading"><h4>@ViewBag.Title</h4></div>
+            <div class="panel-body">
+                <div class="container">
+                    <button type="submit" class="btn btn-primary pull-right" title="Wystew Oceny" name="AddNew" value="yes">Dodaj definicję</button>
+
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-3">Indeks</th>
+                            <th class="col-sm-3">Ocena</th>
+                            <th class="col-sm-3"></th>
+                            <th class="col-sm-3"></th>
+                        </tr>
+                    </thead>
+                    @if (Model.Grades != null)
+                    {
+                        <tbody>
+                            @foreach (var grade in Model.Grades)
+                            {
+                                <tr>
+                                    <td>@grade.Name</td>
+                                    <td>@grade.MaxValue</td>
+                                    <td>
+                                        @if (Model.DGradeID.HasValue && Model.DGradeID.Value == grade.GradeID)
+                                        { 
+                                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        }
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success" title="Wystew Oceny" name="WGradeID" value=@grade.GradeID>Wystaw oceny</button>
+                                        <button type="submit" class="btn btn-warning" title="Edytyj" name="EGradeID" value=@grade.GradeID>Edytuj</button>
+                                        <button type="submit" class="btn btn-danger" title="Usun" name="DGradeID" value=@grade.GradeID>Usuń</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                </table>
+
+            </div>
+
+
+
+
+        </div>
+        <div class="container">
+
+            <a class="btn btn-info pull-right" style="margin: 5px 0px 0px 0px;" href="/Professor">Powrót</a>
+
+        </div>
+    </form>
+}
+
+

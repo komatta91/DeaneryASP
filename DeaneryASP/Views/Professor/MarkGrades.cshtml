@@ -1,0 +1,146 @@
+﻿@using DeaneryASP.Models
+@model MarkGradesViewModel
+@{
+    ViewBag.Title = "Wystaw Oceny";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form action="/Professor/MarkGrades" method="post" role="form">
+        @Html.HiddenFor(m => m.RealisationID)
+        @Html.HiddenFor(m => m.GradeID)
+        <div class="panel panel-default" style="margin: 20px 0px 0px 0px;">
+            <div class="panel-heading"><h4>@ViewBag.Title</h4></div>
+            <div class="panel-body">
+                <div class="container">
+                    <button type="submit" class="btn btn-primary pull-right" title="Wróć" name="Action" value="back">Wróć do definicji ocen</button>
+                </div>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-1">Numer Indeksu</th>
+                            <th class="col-sm-2">Imię</th>
+                            <th class="col-sm-2">Nazwisko</th>
+                            <th class="col-sm-1">Data</th>
+                            <th class="col-sm-1">Ocena</th>
+                            <th class="col-sm-3"></th>
+                            <th class="col-sm-2"></th>
+                        </tr>
+                    </thead>
+                    @foreach (var grade in Model.GradeValues)
+                    {
+                        <tr>
+                            <td>@grade.IndexNo</td>
+                            <td>@grade.FirstName</td>
+                            <td>@grade.LastName</td>
+
+                            @if (grade.GradeValues != null)
+                            {
+                                <td>
+                                    @grade.GradeValues.Date
+                                </td>
+                                <td>
+                                    @grade.GradeValues.Value
+                                </td>
+
+                            }
+                            else
+                            {
+
+                                <td>
+
+                                    <input type="text" id="dp1" class="span2 datepicker" placeholder="Data..."
+                                           name="Date">
+
+
+                                </td>
+                                <td>
+                                    @if (Model.PosibleValue != null)
+                                    {
+                                        <select class="selectpicker show-menu-arrow" data-live-search="true" id="RealisationsID" name="Grade">
+                                            @foreach (var posValue in Model.PosibleValue)
+                                            {
+                                                <option value=@posValue>@posValue</option>
+                                            }
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control" placeholder="Ocena" name="Grade">
+                                    }
+
+
+                                </td>
+
+                            }
+                            @if (Model.RegistrationID == grade.RegistrationID)
+                            {
+                                <td>
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                </td>
+                            }
+
+                            <td>
+                                @if (grade.GradeValues != null)
+                                {
+                                    <button type="submit" class="btn btn-danger pull-right" title="Usun" name="DelValID" value=@grade.GradeValues.GradeValueID>Usuń</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-success pull-right" title="Wystaw ocenę" name="RegistrationID" value=@grade.RegistrationID>Wystaw ocenę</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+
+
+
+
+        </div>
+        <div class="container">
+
+            <a class="btn btn-info pull-right" style="margin: 5px 0px 0px 0px;" href="/Professor">Powrót</a>
+
+        </div>
+    </form>
+
+    @section Scripts
+{
+        <script>
+            $(document).ready(function () {
+                ; (function ($) {
+                    $.fn.datepicker.dates['pl'] = {
+                        days: ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"],
+                        daysShort: ["Nie", "Pn", "Wt", "Śr", "Czw", "Pt", "So", "Nie"],
+                        daysMin: ["N", "Pn", "Wt", "Śr", "Cz", "Pt", "So", "N"],
+                        months: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+                        monthsShort: ["Sty", "Lu", "Mar", "Kw", "Maj", "Cze", "Lip", "Sie", "Wrz", "Pa", "Lis", "Gru"],
+                        today: "Dzisiaj",
+                        weekStart: 1
+                    };
+                }(jQuery));
+
+                console.log("ready!");
+                $('.datepicker').datepicker({
+                    format: "yyyy-mm-dd",
+                    todayBtn: "linked",
+                    language: "pl",
+                    autoclose: true,
+                    todayHighlight: true
+                });
+            });
+
+        </script>
+    }
+}
+
+
